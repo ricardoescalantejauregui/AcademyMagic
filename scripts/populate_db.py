@@ -1,5 +1,10 @@
 import os
 import random
+import sys
+
+# Añadir el directorio raíz del proyecto al PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from faker import Faker
 from GrimoireRegistry import create_app, db
 from GrimoireRegistry.models import Estudiante, Grimorio

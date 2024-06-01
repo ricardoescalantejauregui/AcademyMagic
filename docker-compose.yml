@@ -4,7 +4,9 @@ services:
   web:
     build: .
     ports:
-      - "5000:5000"
+#      - "5000:5000"
+      - "80:80"
+      - "443:443"
     environment:
       FLASK_ENV: development
       SECRET_KEY: adivina
