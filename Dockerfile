@@ -14,10 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expone el puerto en el que correrá la aplicación
-#EXPOSE 5000
+EXPOSE 5000
 # Expone los puertos 80 y 443
-EXPOSE 80
-EXPOSE 443
+#EXPOSE 80
+#EXPOSE 443
 
 # Establece la variable de entorno para Flask
 ENV FLASK_APP=run.py
