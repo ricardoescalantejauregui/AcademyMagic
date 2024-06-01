@@ -1,10 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Solicitudes{% endblock %}
-
 {% block content %}
-<h1>Solicitudes</h1>
-<table>
+<h2>Lista de Solicitudes</h2>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -13,19 +23,30 @@
             <th>Edad</th>
             <th>Afinidad Mágica</th>
             <th>Grimorio</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for solicitud in solicitudes %}
+        {% for estudiante in estudiantes %}
         <tr>
-            <td>{{ solicitud.nombre }}</td>
-            <td>{{ solicitud.apellido }}</td>
-            <td>{{ solicitud.identificacion }}</td>
-            <td>{{ solicitud.edad }}</td>
-            <td>{{ solicitud.afinidad_magica }}</td>
-            <td>{{ solicitud.grimorio.tipo_trebol if solicitud.grimorio else 'Sin asignar' }}</td>
+            <td>{{ estudiante.nombre }}</td>
+            <td>{{ estudiante.apellido }}</td>
+            <td>{{ estudiante.identificacion }}</td>
+            <td>{{ estudiante.edad }}</td>
+            <td>{{ estudiante.afinidad_magica }}</td>
+            <td>{{ estudiante.grimorio.tipo_trebol }}</td>
+            <td>
+                <a href="{{ url_for('web.modificar_solicitud', id=estudiante.id) }}" class="btn btn-warning">Modificar</a>
+                <form action="{{ url_for('web.eliminar_solicitud', id=estudiante.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<div class="pagination-wrapper">
+    {{ pagination.links }}
+</div>
+    {{ pagination.info }}
 {% endblock %}

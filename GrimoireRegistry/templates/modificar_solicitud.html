@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Modificar Solicitud</h2>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<div class="form-container">
+    <form method="POST">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ estudiante.nombre }}" required>
+        </div>
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" value="{{ estudiante.apellido }}" required>
+        </div>
+        <div class="form-group">
+            <label for="identificacion">Identificación:</label>
+            <input type="text" class="form-control" id="identificacion" name="identificacion" value="{{ estudiante.identificacion }}" required>
+        </div>
+        <div class="form-group">
+            <label for="edad">Edad:</label>
+            <input type="number" class="form-control" id="edad" name="edad" value="{{ estudiante.edad }}" required>
+        </div>
+        <div class="form-group">
+            <label for="afinidad_magica">Afinidad Mágica:</label>
+            <select class="form-control" id="afinidad_magica" name="afinidad_magica" required>
+                <option value="Oscuridad" {% if estudiante.afinidad_magica == 'Oscuridad' %}selected{% endif %}>Oscuridad</option>
+                <option value="Luz" {% if estudiante.afinidad_magica == 'Luz' %}selected{% endif %}>Luz</option>
+                <option value="Fuego" {% if estudiante.afinidad_magica == 'Fuego' %}selected{% endif %}>Fuego</option>
+                <option value="Agua" {% if estudiante.afinidad_magica == 'Agua' %}selected{% endif %}>Agua</option>
+                <option value="Viento" {% if estudiante.afinidad_magica == 'Viento' %}selected{% endif %}>Viento</option>
+                <option value="Tierra" {% if estudiante.afinidad_magica == 'Tierra' %}selected{% endif %}>Tierra</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="grimorio">Grimorio:</label>
+            <select class="form-control" id="grimorio" name="grimorio_id" required>
+                {% for grimorio in grimorios %}
+                <option value="{{ grimorio.id }}" {% if estudiante.grimorio_id == grimorio.id %}selected{% endif %}>{{ grimorio.tipo_trebol }} - {{ grimorio.rareza }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Modificar Solicitud</button>
+    </form>
+</div>
+{% endblock %}

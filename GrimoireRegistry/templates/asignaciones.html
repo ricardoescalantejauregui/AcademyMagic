@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Lista de Asignaciones</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Tipo de Trébol</th>
+            <th>Rareza</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grimorio in grimorios %}
+        <tr>
+            <td>{{ grimorio.tipo_trebol }}</td>
+            <td>{{ grimorio.rareza }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
