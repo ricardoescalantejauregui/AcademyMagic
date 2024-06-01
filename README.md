@@ -34,7 +34,7 @@ GrimoireRegistry es una aplicación Flask para gestionar solicitudes de estudian
     ```sh
     export FLASK_APP=run.py
     export FLASK_ENV=development
-    export SECRET_KEY='your-secret-key'
+    export SECRET_KEY='adivina'
     ```
 
 ## Inicialización de la Base de Datos
