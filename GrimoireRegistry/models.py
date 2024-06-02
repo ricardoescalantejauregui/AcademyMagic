@@ -1,7 +1,6 @@
 from . import db
 from datetime import datetime
 
-
 class Estudiante(db.Model):
     """
     The Estudiante model class encapsulates data and features related to a Student object in the system.
@@ -44,7 +43,6 @@ class Estudiante(db.Model):
             'fecha_creacion': self.fecha_creacion
         }
 
-
 class Grimorio(db.Model):
     """
     The Grimorio model class encapsulates data and features related to a Grimorio object in the system.
@@ -57,8 +55,8 @@ class Grimorio(db.Model):
     """
 
     id = db.Column(db.Integer, primary_key=True)
-    tipo_trebol = db.Column(db.String(10), nullable=False)
-    rareza = db.Column(db.String(10), nullable=False)
+    tipo_trebol = db.Column(db.String(20), nullable=False)  # Aumentado de 10 a 20
+    rareza = db.Column(db.String(20), nullable=False)       # Aumentado de 10 a 20
     estudiantes = db.relationship('Estudiante', backref='grimorio', lazy=True)
 
     def to_dict(self):
