@@ -21,7 +21,8 @@ grimorios_info = [
     {'tipo_trebol': 'Dos hojas', 'rareza': 'Común'},
     {'tipo_trebol': 'Tres hojas', 'rareza': 'Poco habitual'},
     {'tipo_trebol': 'Cuatro hojas', 'rareza': 'Inusual'},
-    {'tipo_trebol': 'Cinco hojas', 'rareza': 'Muy raro'}
+    {'tipo_trebol': 'Cinco hojas', 'rareza': 'Muy raro'},
+    {'tipo_trebol': 'Por Autorizar', 'rareza': '_'}
 ]
 
 

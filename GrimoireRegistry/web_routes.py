@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import Estudiante, Grimorio, db
 from flask_paginate import Pagination, get_page_args
+import random
 
 # Creating a blueprint for the application routes
 web = Blueprint('web', __name__)
-
 
 @web.route('/')
 def index():
@@ -16,25 +16,20 @@ def index():
     """
     return render_template('index.html')
 
-
 @web.route('/asignaciones')
 def asignaciones():
     grimorios = Grimorio.query.all()
     return render_template('asignaciones.html', grimorios=grimorios)
 
-
 @web.route('/solicitudes')
 def solicitudes():
-    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page',
-                                           offset_parameter='offset')
-    per_page = 10
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', offset_parameter='offset')
+    per_page = 9
     offset = (page - 1) * per_page
     total = Estudiante.query.count()
     estudiantes = Estudiante.query.offset(offset).limit(per_page).all()
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
-    return render_template('solicitudes.html', estudiantes=estudiantes, page=page, per_page=per_page,
-                           pagination=pagination)
-
+    return render_template('solicitudes.html', estudiantes=estudiantes, page=page, per_page=per_page, pagination=pagination)
 
 @web.route('/crear-solicitud', methods=['GET', 'POST'])
 def crear_solicitud():
@@ -44,7 +39,6 @@ def crear_solicitud():
         identificacion = request.form.get('identificacion')
         edad = request.form.get('edad')
         afinidad_magica = request.form.get('afinidad_magica')
-        grimorio_id = request.form.get('grimorio_id')
 
         # Validar datos
         if not nombre.isalpha() or len(nombre) > 20:
@@ -54,8 +48,7 @@ def crear_solicitud():
             flash('Apellido no válido. Debe contener solo letras y tener máximo 20 caracteres.', 'danger')
             return redirect(url_for('web.crear_solicitud'))
         if not identificacion.isalnum() or len(identificacion) > 10:
-            flash('Identificación no válida. Debe contener solo números y letras, y tener máximo 10 caracteres.',
-                  'danger')
+            flash('Identificación no válida. Debe contener solo números y letras, y tener máximo 10 caracteres.', 'danger')
             return redirect(url_for('web.crear_solicitud'))
         if not edad.isdigit() or not (10 <= int(edad) <= 99):
             flash('Edad no válida. Debe ser un número de dos dígitos entre 10 y 99.', 'danger')
@@ -64,14 +57,15 @@ def crear_solicitud():
             flash('Afinidad mágica no válida.', 'danger')
             return redirect(url_for('web.crear_solicitud'))
 
-        grimorio = Grimorio.query.get(grimorio_id)
+        grimorio_id = 6  # Asigna automáticamente grimorio_id=6
+
         nueva_solicitud = Estudiante(
             nombre=nombre,
             apellido=apellido,
             identificacion=identificacion,
             edad=int(edad),
             afinidad_magica=afinidad_magica,
-            grimorio=grimorio
+            grimorio_id=grimorio_id
         )
 
         db.session.add(nueva_solicitud)
@@ -79,9 +73,7 @@ def crear_solicitud():
         flash('Solicitud creada exitosamente!', 'success')
         return redirect(url_for('web.solicitudes'))
 
-    grimorios = Grimorio.query.all()
-    return render_template('crear_solicitud.html', grimorios=grimorios)
-
+    return render_template('crear_solicitud.html')
 
 @web.route('/modificar-solicitud/<int:id>', methods=['GET', 'POST'])
 def modificar_solicitud(id):
@@ -102,8 +94,7 @@ def modificar_solicitud(id):
             flash('Apellido no válido. Debe contener solo letras y tener máximo 20 caracteres.', 'danger')
             return redirect(url_for('web.modificar_solicitud', id=id))
         if not identificacion.isalnum() or len(identificacion) > 10:
-            flash('Identificación no válida. Debe contener solo números y letras, y tener máximo 10 caracteres.',
-                  'danger')
+            flash('Identificación no válida. Debe contener solo números y letras, y tener máximo 10 caracteres.', 'danger')
             return redirect(url_for('web.modificar_solicitud', id=id))
         if not edad.isdigit() or not (10 <= int(edad) <= 99):
             flash('Edad no válida. Debe ser un número de dos dígitos entre 10 y 99.', 'danger')
@@ -126,11 +117,19 @@ def modificar_solicitud(id):
     grimorios = Grimorio.query.all()
     return render_template('modificar_solicitud.html', estudiante=estudiante, grimorios=grimorios)
 
-
 @web.route('/eliminar-solicitud/<int:id>', methods=['POST'])
 def eliminar_solicitud(id):
     estudiante = Estudiante.query.get_or_404(id)
     db.session.delete(estudiante)
     db.session.commit()
     flash('Solicitud eliminada exitosamente!', 'success')
+    return redirect(url_for('web.solicitudes'))
+
+@web.route('/autorizar/<int:id>', methods=['POST'])
+def autorizar_solicitud(id):
+    estudiante = Estudiante.query.get_or_404(id)
+    nuevo_grimorio_id = random.randint(1, 5)
+    estudiante.grimorio_id = nuevo_grimorio_id
+    db.session.commit()
+    flash('Solicitud autorizada y grimorio asignado!', 'success')
     return redirect(url_for('web.solicitudes'))

@@ -41,6 +41,12 @@
                           style="display:inline;">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
+                    {% if estudiante.grimorio_id == 6 %}
+                    <form action="{{ url_for('web.autorizar_solicitud', id=estudiante.id) }}" method="POST"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-success">Autorizar</button>
+                    </form>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
