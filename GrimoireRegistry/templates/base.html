@@ -12,33 +12,40 @@
             margin: 20px auto;
             border-collapse: collapse;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
         }
+
         th {
             background-color: #4f607f; /* Cambia este color según tu preferencia */
             color: white;
             font-weight: bold;
         }
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         tr:nth-child(odd) {
             background-color: #ffffff;
         }
+
         .pagination-wrapper {
             display: flex;
             justify-content: center;
             margin: 20px 0;
         }
+
         header h1 {
             color: #ffffff; /* Cambia este color según tu preferencia */
             background-color: #4f607f; /* Asegúrate de que contraste con el color del texto */
             padding: 20px;
             text-align: center;
         }
+
         footer {
             text-align: center;
             padding: 10px;
@@ -51,25 +58,26 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Grimoire Registry</h1>
-        <nav class="nav">
-            <ul class="nav">
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('web.index') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('web.asignaciones') }}">Asignaciones</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('web.solicitudes') }}">Solicitudes</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('web.crear_solicitud') }}">Crear Solicitud</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>
-        <p>&copy; 2024 Grimoire Registry Academy. Todos los derechos reservados.</p>
-    </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<header>
+    <h1>Grimoire Registry</h1>
+    <nav class="nav">
+        <ul class="nav">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('web.index') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('web.asignaciones') }}">Asignaciones</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('web.solicitudes') }}">Solicitudes</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('web.crear_solicitud') }}">Crear Solicitud</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    <p>&copy; 2024 Grimoire Registry Academy. Todos los derechos reservados.</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

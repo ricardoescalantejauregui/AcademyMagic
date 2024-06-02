@@ -34,7 +34,7 @@ def create_grimorios():
 
 
 # Crear Estudiantes
-def create_estudiantes(num_estudiantes=10):
+def create_estudiantes(num_estudiantes=50):
     afinidades_magicas = ['Oscuridad', 'Luz', 'Fuego', 'Agua', 'Viento', 'Tierra']
     grimorios = Grimorio.query.all()
 

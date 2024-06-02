@@ -42,6 +42,7 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
 .form-container {
     max-width: 50%;
     margin: 0 auto;
@@ -54,4 +55,11 @@ footer {
 .form-container h2 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.justified-center-text {
+    width: 80%;
+    margin: 0 auto;
+    text-align: justify;
+    text-justify: inter-word;
 }

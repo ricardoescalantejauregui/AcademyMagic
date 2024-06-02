@@ -1,6 +1,7 @@
 from .models import Grimorio
 import random
 
+
 def validar_solicitud(data):
     """
     Valida los datos de una solicitud de ingreso.
@@ -22,6 +23,7 @@ def validar_solicitud(data):
     if data.get('afinidad_magica') not in ['Oscuridad', 'Luz', 'Fuego', 'Agua', 'Viento', 'Tierra']:
         return False
     return True
+
 
 def asignar_grimorio():
     """
