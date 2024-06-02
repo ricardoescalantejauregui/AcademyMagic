@@ -5,30 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Grimoire Registry{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4f607f; /* Cambia este color según tu preferencia */
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+    </style>
     {% block head %}
     {% endblock %}
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('web.index') }}">Home</a></li>
-{#                <li><a href="{{ url_for('web.create_solicitud') }}">Nueva Solicitud</a></li>#}
-                <li><a href="{{ url_for('web.get_solicitudes') }}">Ver Solicitudes</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('web.index') }}">Home</a></li>
+            <li><a href="{{ url_for('web.asignaciones') }}">Asignaciones</a></li>
+            <li><a href="{{ url_for('web.solicitudes') }}">Ver Solicitudes</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Grimoire Registry. Todos los derechos reservados.</p>
-    </footer>
-
-    {% block scripts %}
+<main>
+    {% block content %}
     {% endblock %}
+</main>
+
+<footer>
+    <p>&copy; 2024 Grimoire Registry Academy. Todos los derechos reservados.</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% block scripts %}
+{% endblock %}
 </body>
 </html>

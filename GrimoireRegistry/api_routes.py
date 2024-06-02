@@ -2,9 +2,9 @@ from flask import Blueprint, request, jsonify
 from .models import db, Estudiante, Grimorio
 from .utils import validar_solicitud, asignar_grimorio
 from flasgger import swag_from
+import random
 
 api = Blueprint('api', __name__)
-
 
 @api.route('/solicitud', methods=['POST'])
 @swag_from({
@@ -59,20 +59,48 @@ def create_solicitud():
     data = request.get_json()
     if not validar_solicitud(data):
         return jsonify({"error": "Solicitud no válida"}), 400
+
+    grimorio_id = 6  # Asigna automáticamente grimorio_id=6
+
     estudiante = Estudiante(
         nombre=data['nombre'],
         apellido=data['apellido'],
         identificacion=data['identificacion'],
         edad=data['edad'],
-        afinidad_magica=data['afinidad_magica']
+        afinidad_magica=data['afinidad_magica'],
+        grimorio_id=grimorio_id
     )
     db.session.add(estudiante)
     db.session.commit()
     return jsonify({"message": "Solicitud creada"}), 201
 
-
 @api.route('/solicitud/<int:id>', methods=['PUT'])
 @swag_from({
+    'parameters': [
+        {
+            'name': 'id',
+            'in': 'path',
+            'type': 'integer',
+            'required': True,
+            'description': 'ID de la solicitud a actualizar'
+        },
+        {
+            'name': 'body',
+            'in': 'body',
+            'required': True,
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'nombre': {'type': 'string', 'example': 'Juan'},
+                    'apellido': {'type': 'string', 'example': 'Pérez'},
+                    'identificacion': {'type': 'string', 'example': 'ID1234'},
+                    'edad': {'type': 'integer', 'example': 18},
+                    'afinidad_magica': {'type': 'string', 'example': 'Fuego'},
+                    'grimorio_id': {'type': 'integer', 'example': 1}
+                }
+            }
+        }
+    ],
     'responses': {
         200: {
             'description': 'Solicitud actualizada',
@@ -116,12 +144,22 @@ def update_solicitud(id):
         estudiante.edad = data['edad']
     if 'afinidad_magica' in data:
         estudiante.afinidad_magica = data['afinidad_magica']
+    if 'grimorio_id' in data:
+        estudiante.grimorio_id = data['grimorio_id']
     db.session.commit()
     return jsonify({"message": "Solicitud actualizada"}), 200
 
-
 @api.route('/solicitud/<int:id>/estatus', methods=['PATCH'])
 @swag_from({
+    'parameters': [
+        {
+            'name': 'id',
+            'in': 'path',
+            'type': 'integer',
+            'required': True,
+            'description': 'ID de la solicitud a actualizar'
+        }
+    ],
     'responses': {
         200: {
             'description': 'Estatus actualizado',
@@ -150,6 +188,18 @@ def update_solicitud(id):
                     }
                 }
             }
+        },
+        400: {
+            'description': 'No se puede proceder con la solicitud',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'error': {
+                        'type': 'string',
+                        'example': 'El estudiante no puede ser autorizado para un nuevo grimorio'
+                    }
+                }
+            }
         }
     }
 })
@@ -158,11 +208,14 @@ def update_status(id):
     Actualiza el estatus de una solicitud de ingreso existente.
     """
     estudiante = Estudiante.query.get_or_404(id)
-    grimorio = asignar_grimorio()
-    estudiante.grimorio = grimorio
-    db.session.commit()
-    return jsonify({"message": "Estatus actualizado", "grimorio": grimorio.tipo_trebol}), 200
+    if estudiante.grimorio_id != 6:
+        return jsonify({"error": "El estudiante no puede ser autorizado para un nuevo grimorio"}), 400
 
+    nuevo_grimorio_id = random.randint(1, 5)
+    estudiante.grimorio_id = nuevo_grimorio_id
+    db.session.commit()
+    grimorio = Grimorio.query.get(nuevo_grimorio_id)
+    return jsonify({"message": "Estatus actualizado", "grimorio": grimorio.tipo_trebol}), 200
 
 @api.route('/solicitudes', methods=['GET'])
 @swag_from({
@@ -200,7 +253,6 @@ def get_all_solicitudes():
     solicitudes = Estudiante.query.all()
     return jsonify([solicitud.to_dict() for solicitud in solicitudes]), 200
 
-
 @api.route('/asignaciones', methods=['GET'])
 @swag_from({
     'responses': {
@@ -227,9 +279,17 @@ def get_asignaciones():
     asignaciones = Grimorio.query.all()
     return jsonify([asignacion.to_dict() for asignacion in asignaciones]), 200
 
-
 @api.route('/solicitud/<int:id>', methods=['DELETE'])
 @swag_from({
+    'parameters': [
+        {
+            'name': 'id',
+            'in': 'path',
+            'type': 'integer',
+            'required': True,
+            'description': 'ID de la solicitud a eliminar'
+        }
+    ],
     'responses': {
         200: {
             'description': 'Solicitud eliminada',
