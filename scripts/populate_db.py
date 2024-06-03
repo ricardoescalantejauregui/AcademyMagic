@@ -62,6 +62,6 @@ def create_estudiantes(num_estudiantes=50):
 # Ejecutar el script
 with app.app_context():
     db.create_all()  # Asegurarse de que todas las tablas estén creadas
-    create_grimorios()
-    create_estudiantes()
+    # create_grimorios()
+    # create_estudiantes()
     print("Base de datos poblada con datos de prueba.")
